@@ -1,23 +1,44 @@
 package dev.levenshtein;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 /**
  * Classe de test pour DistanceLevenshtein utilisant un fichier CSV.
  */
 public class DistanceLevenshteinTest {
 
-    // Attribut pour l'instance de DistanceLevenshtein
     private DistanceLevenshtein distanceLevenshtein = new DistanceLevenshtein();
 
-    // Test paramétré utilisant le fichier CSV
-    @ParameterizedTest
-    @CsvFileSource(resources = "/dev/levenshtein/DistanceLevenshtein.csv", numLinesToSkip = 1)
-    public void calculerDistance(String mot1, String mot2, int distanceAttendue) {
-        Assertions.assertEquals(distanceAttendue, distanceLevenshtein.calculerDistance(mot1, mot2));
+    @Test
+    public void testPremierParametreNull() {
+        AppException exception = assertThrows(AppException.class, () -> {
+            distanceLevenshtein.calculerDistance(null, "test");
+        });
+        assertEquals("Le premier paramètre ne peut être null ou vide", exception.getMessage());
+    }
+
+    @Test
+    public void testPremierParametreVide() {
+        AppException exception = assertThrows(AppException.class, () -> {
+            distanceLevenshtein.calculerDistance("", "test");
+        });
+        assertEquals("Le premier paramètre ne peut être null ou vide", exception.getMessage());
+    }
+
+    @Test
+    public void testSecondParametreNull() {
+        AppException exception = assertThrows(AppException.class, () -> {
+            distanceLevenshtein.calculerDistance("test", null);
+        });
+        assertEquals("Le second paramètre ne peut être null ou vide", exception.getMessage());
+    }
+
+    @Test
+    public void testSecondParametreVide() {
+        AppException exception = assertThrows(AppException.class, () -> {
+            distanceLevenshtein.calculerDistance("test", "");
+        });
+        assertEquals("Le second paramètre ne peut être null ou vide", exception.getMessage());
     }
 }

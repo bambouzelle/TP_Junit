@@ -1,8 +1,5 @@
 package dev.levenshtein;
 
-/**
- * Classe de calcul de la distance de Levenshtein.
- */
 public class DistanceLevenshtein {
 
     /**
@@ -12,13 +9,26 @@ public class DistanceLevenshtein {
      * @return un entier qui représente la distance de Levenshtein entre les deux mots fournis.
      */
     public int calculerDistance(CharSequence mot1, CharSequence mot2) {
+        // Vérifier si mot1 est null ou vide
+        if (mot1 == null || mot1.length() == 0) {
+            throw new AppException("Le premier paramètre ne peut être null ou vide");
+        }
+
+        // Vérifier si mot2 est null ou vide
+        if (mot2 == null || mot2.length() == 0) {
+            throw new AppException("Le second paramètre ne peut être null ou vide");
+        }
+
         int len0 = mot1.length() + 1;
         int len1 = mot2.length() + 1;
+
         int[] cost = new int[len0];
         int[] newcost = new int[len0];
+
         for (int i = 0; i < len0; i++) {
             cost[i] = i;
         }
+
         for (int j = 1; j < len1; j++) {
             newcost[0] = j;
             for (int i = 1; i < len0; i++) {
@@ -32,7 +42,7 @@ public class DistanceLevenshtein {
             cost = newcost;
             newcost = swap;
         }
+
         return cost[len0 - 1];
     }
-
 }
